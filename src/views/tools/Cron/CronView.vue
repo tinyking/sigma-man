@@ -37,17 +37,19 @@
     </div>
   </a-card>
 </template>
-<script>
-import CronSecond from '@/components/cron/Second';
-import CronMinute from '@/components/cron/Minute';
-import CronHour from '@/components/cron/Hour';
-import CronDay from '@/components/cron/Day';
-import CronMonth from '@/components/cron/Month';
-import CronWeek from '@/components/cron/Week';
-import CronYear from '@/components/cron/Year';
 
-export default {
-  name: 'CronView',
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator';
+
+import CronSecond from '@/components/cron/Second.vue';
+import CronMinute from '@/components/cron/Minute.vue';
+import CronHour from '@/components/cron/Hour.vue';
+import CronDay from '@/components/cron/Day.vue';
+import CronMonth from '@/components/cron/Month.vue';
+import CronWeek from '@/components/cron/Week.vue';
+import CronYear from '@/components/cron/Year.vue';
+
+@Component({
   components: {
     CronSecond,
     CronMinute,
@@ -56,14 +58,11 @@ export default {
     CronMonth,
     CronWeek,
     CronYear
-  },
-  data() {
-    return {};
-  },
-  methods: {
-    callback(key) {
-      //   this.$message.info(`Tabs change, current tab is ${key}`);
-    }
   }
-};
+})
+export default class CronView extends Vue {
+  callback(key: number) {
+    this.$message.info(`Tabs change, current tab is ${key}`);
+  }
+}
 </script>

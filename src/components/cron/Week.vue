@@ -72,17 +72,14 @@
   </div>
 </template>
 
-<script>
-import Row from './Row';
-export default {
-  name: 'CronWeek',
-  components: { Row },
-  data() {
-    return {
-      value: 1
-    };
-  }
-};
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import Row from './Row.vue';
+
+@Component({ components: { Row } })
+export default class CronWeek extends Vue {
+  value = 1;
+}
 </script>
 
 <style></style>
