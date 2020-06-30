@@ -29,7 +29,7 @@
     <div>
       <a-form layout="inline">
         <a-form-item label="Cron Expression">
-          <a-input style="width:500px">
+          <a-input style="width:500px" :value="fullCron" readonly>
             <a-icon slot="addonAfter" type="copy" style="cursor: pointer;" />
           </a-input>
         </a-form-item>
@@ -40,6 +40,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Action, Getter } from 'vuex-class';
 
 import CronSecond from '@/components/cron/Second.vue';
 import CronMinute from '@/components/cron/Minute.vue';
@@ -61,6 +62,12 @@ import CronYear from '@/components/cron/Year.vue';
   }
 })
 export default class CronView extends Vue {
+  @Action('initCron', { namespace: 'cron' }) private initCron!: Function;
+
+  @Getter('fullCron', { namespace: 'cron' }) public fullCron!: string;
+  created() {
+    this.initCron();
+  }
   callback(key: number) {
     this.$message.info(`Tabs change, current tab is ${key}`);
   }
