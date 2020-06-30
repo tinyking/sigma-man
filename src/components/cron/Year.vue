@@ -1,6 +1,6 @@
 <template>
   <div style="padding-bottom: 10px">
-    <a-radio-group v-model="value" @change="onChange">
+    <a-radio-group v-model="type" @change="onChange">
       <row>
         <a-radio :value="1"></a-radio>
         <div slot="text">
@@ -17,39 +17,9 @@
         <a-radio :value="3"></a-radio>
         <div slot="text">
           <span>周期从&nbsp;</span>
-          <a-input-number :min="1" :max="10" />
+          <a-input-number :min="2020" :max="9999" v-model="periodStart" @change="onChange" />
           <span>&nbsp;-&nbsp;</span>
-          <a-input-number :min="1" :max="10" />
-        </div>
-      </row>
-      <row>
-        <a-radio :value="4"></a-radio>
-        <div slot="text">
-          <span>指定</span>
-          <a-select
-            v-model="value"
-            mode="multiple"
-            style="width: 400px"
-            placeholder="select one country"
-            option-label-prop="label"
-          >
-            <a-select-option value="china" label="China">
-              <span role="img" aria-label="China">🇨🇳</span>
-              China (中国)
-            </a-select-option>
-            <a-select-option value="usa" label="USA">
-              <span role="img" aria-label="USA">🇺🇸</span>
-              USA (美国)
-            </a-select-option>
-            <a-select-option value="japan" label="Japan">
-              <span role="img" aria-label="Japan">🇯🇵</span>
-              Japan (日本)
-            </a-select-option>
-            <a-select-option value="korea" label="Korea">
-              <span role="img" aria-label="Korea">🇰🇷</span>
-              Korea (韩国)
-            </a-select-option>
-          </a-select>
+          <a-input-number :min="2020" :max="9999" v-model="periodEnd" @change="onChange" />
         </div>
       </row>
     </a-radio-group>
@@ -57,12 +27,31 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
+
 import Row from './Row.vue';
+import { CronMixins } from '@/mixins';
 
 @Component({ components: { Row } })
-export default class CronYear extends Vue {
-  value = 1;
+export default class CronYear extends Mixins(CronMixins) {
+  periodStart = 2020;
+  periodEnd = 2021;
+
+  public onChange() {
+    let value = '*';
+    switch (this.type) {
+      case 1:
+        value = '';
+        break;
+      case 2:
+        break;
+      case 3:
+        value = `${this.periodStart}-${this.periodEnd}`;
+        break;
+    }
+
+    this.changeYear(value);
+  }
 }
 </script>
 

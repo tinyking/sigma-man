@@ -1,6 +1,6 @@
 <template>
   <div style="padding-bottom: 10px">
-    <a-radio-group v-model="value" @change="onChange">
+    <a-radio-group v-model="type" @change="onChange">
       <row>
         <a-radio :value="1"></a-radio>
         <div slot="text">
@@ -8,57 +8,38 @@
         </div>
       </row>
       <row>
-        <a-radio :value="1"></a-radio>
+        <a-radio :value="2"></a-radio>
         <div slot="text">
           <span>不指定</span>
         </div>
       </row>
       <row>
-        <a-radio :value="2"></a-radio>
-        <div slot="text">
-          <span>周期从&nbsp;</span>
-          <a-input-number :min="1" :max="10" />
-          <span>&nbsp;-&nbsp;</span>
-          <a-input-number :min="1" :max="10" />
-          <span>&nbsp;月</span>
-        </div>
-      </row>
-      <row>
         <a-radio :value="3"></a-radio>
         <div slot="text">
-          <span>从&nbsp;</span>
-          <a-input-number :min="1" :max="10" />
-          <span>&nbsp;日开始，每&nbsp;</span>
-          <a-input-number :min="1" :max="10" />
-          <span>&nbsp;月执行一次</span>
+          <span>周期从&nbsp;</span>
+          <a-input-number :min="1" :max="12" v-model="periodStart" @change="onChange" />
+          <span>&nbsp;-&nbsp;</span>
+          <a-input-number :min="1" :max="12" v-model="periodEnd" @change="onChange" />
+          <span>&nbsp;月</span>
         </div>
       </row>
       <row>
         <a-radio :value="4"></a-radio>
         <div slot="text">
+          <span>从&nbsp;</span>
+          <a-input-number :min="1" :max="12" v-model="from" @change="onChange" />
+          <span>&nbsp;日开始，每&nbsp;</span>
+          <a-input-number :min="1" :max="12" v-model="interval" @change="onChange" />
+          <span>&nbsp;月执行一次</span>
+        </div>
+      </row>
+      <row>
+        <a-radio :value="5"></a-radio>
+        <div slot="text">
           <span>指定</span>
-          <a-select
-            v-model="value"
-            mode="multiple"
-            style="width: 400px"
-            placeholder="select one country"
-            option-label-prop="label"
-          >
-            <a-select-option value="china" label="China">
-              <span role="img" aria-label="China">🇨🇳</span>
-              China (中国)
-            </a-select-option>
-            <a-select-option value="usa" label="USA">
-              <span role="img" aria-label="USA">🇺🇸</span>
-              USA (美国)
-            </a-select-option>
-            <a-select-option value="japan" label="Japan">
-              <span role="img" aria-label="Japan">🇯🇵</span>
-              Japan (日本)
-            </a-select-option>
-            <a-select-option value="korea" label="Korea">
-              <span role="img" aria-label="Korea">🇰🇷</span>
-              Korea (韩国)
+          <a-select v-model="selected" mode="multiple" style="width: 400px" @change="onChange">
+            <a-select-option v-for="time in months" :key="time" :value="time" :label="time">
+              {{ time }}
             </a-select-option>
           </a-select>
         </div>
@@ -68,12 +49,42 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import Row from './Row.vue';
+import { CronMixins } from '@/mixins';
 
 @Component({ components: { Row } })
-export default class CronMonth extends Vue {
-  value = 1;
+export default class CronMonth extends Mixins(CronMixins) {
+  periodStart = 1;
+  periodEnd = 2;
+
+  from = 1;
+  interval = 1;
+
+  selected = [];
+
+  public onChange() {
+    let value = '*';
+    switch (this.type) {
+      case 1:
+        break;
+      case 2:
+        value = '?';
+        break;
+      case 3:
+        value = `${this.periodStart}-${this.periodEnd}`;
+        break;
+      case 4:
+        value = `${this.from}/${this.interval}`;
+        break;
+      case 5:
+        this.selected = this.selected.sort();
+        value = this.selected.join(',');
+        break;
+    }
+
+    this.changeMonth(value);
+  }
 }
 </script>
 

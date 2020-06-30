@@ -1,5 +1,5 @@
 <template>
-  <a-row type="flex" justify="start" style="margin-bottom: 8px">
+  <a-row type="flex" justify="start" align="middle" style="margin-bottom: 8px">
     <a-col>
       <slot></slot>
     </a-col>

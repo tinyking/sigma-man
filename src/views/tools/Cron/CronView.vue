@@ -1,6 +1,6 @@
 <template>
   <a-card title="Cron Tool">
-    <a-tabs @change="callback">
+    <a-tabs>
       <a-tab-pane key="1" tab="秒">
         <cron-second />
       </a-tab-pane>
@@ -67,9 +67,6 @@ export default class CronView extends Vue {
   @Getter('fullCron', { namespace: 'cron' }) public fullCron!: string;
   created() {
     this.initCron();
-  }
-  callback(key: number) {
-    this.$message.info(`Tabs change, current tab is ${key}`);
   }
 }
 </script>
