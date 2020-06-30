@@ -62,15 +62,14 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, Mixins } from 'vue-property-decorator';
 import { Mutation } from 'vuex-class';
 
 import Row from './Row.vue';
+import { CronMixins } from '@/mixins';
 
 @Component({ components: { Row } })
-export default class CronSecond extends Vue {
-  type = 1;
-
+export default class CronSecond extends Mixins(CronMixins) {
   periodStart = 1;
   periodEnd = 2;
 
@@ -78,9 +77,6 @@ export default class CronSecond extends Vue {
   interval = 1;
 
   selected = [];
-
-  @Mutation('changeSecond', { namespace: 'cron' })
-  private changeSecond!: Function;
 
   public onChange() {
     let value = '*';
