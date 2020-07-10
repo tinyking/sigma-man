@@ -3,6 +3,7 @@ import Home from '@/views/Home/Home.vue';
 import CronView from '@/views/tools/Cron/CronView.vue';
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
+import MainContent from '@/views/Content/MainContent.vue';
 
 Vue.use(VueRouter);
 
@@ -26,6 +27,11 @@ const routes: Array<RouteConfig> = [
     name: 'Tools',
     component: Layout,
     children: [{ path: 'cron', component: CronView }]
+  },
+  {
+    path: '/docs',
+    component: Layout,
+    children: [{ path: 'index', component: MainContent }]
   }
 ];
 
